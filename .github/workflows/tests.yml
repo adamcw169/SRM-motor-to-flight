@@ -17,6 +17,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[dev,flight]"
-      - run: ruff check src tests examples validation
+      - run: ruff check --output-format=github src tests examples validation
       - run: python validation/ndrt/fetch_data.py
       - run: pytest
