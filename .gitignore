@@ -11,3 +11,6 @@ dist/
 *.log
 # raw reference PDFs are not redistributed
 references/*.pdf
+
+# NDRT data are fetched from the RocketPy repository, not redistributed
+validation/ndrt/data/

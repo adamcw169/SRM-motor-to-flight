@@ -82,22 +82,45 @@ The head-end pressure is the root of ṁ_N = p₀,N A_t / c*. Webs advance with 
 and the step is limited so that no station overshoots burnout.
 
 Neglected: gas storage in the 1D flow, ignition and flame spreading, Zel'dovich–Novozhilov
-dynamic burning, two-phase flow, and grain deformation. Willcox et al. show dynamic burning
-decays within about 0.15 s for NAWC motor 13, so it mainly affects the ignition spike.
+dynamic burning, two-phase flow, and grain deformation. Willcox et al. (2007) find dynamic burning
+decays within about 0.15 s in the motors they studied, so it mainly affects the ignition spike.
 
 ## 4. Nozzle and throat erosion — `nozzle.py`
 
 Ideal thrust coefficient times an efficiency factor. Throat recession follows
 `dr_t/dt = k (p/p_ref)^m`, with m = 1 following the near-linear pressure dependence reported by
 Acharya & Kuo (2007). k is a calibration and uncertainty parameter, not a physical constant.
+For non-aluminised AP/HTPB on graphite, their kinetic schemes predict roughly 0.25–1.3 mm/s at
+7 MPa (Acharya & Kuo 2007, Fig. 4a), which bounds what a calibration may return.
 
-## 5. Flight — `flight.py`
+Temperature sensitivity uses Davenas' constant-K_n coefficient π_K (about 0.25 %/°C for
+composites) converted to the constant-pressure form σ_p = (1 − n) π_K (Davenas 1993, ch. 1 §2.6).
 
-Thrust histories pass to RocketPy (Ceotto et al. 2021). RocketPy derives mass flow from a
-constant exhaust velocity; `exhaust_velocity_error` quantifies how far that sits from the
-ballistics mass flow.
+## 5. Calibration to a certified thrust curve — `calibration.py`
 
-## 6. Global sensitivity — `uq/sobol.py`
+Commercial motors publish grain geometry and a static-test thrust curve, not their propellant
+data. With η_F fixed, the unknowns are identifiable from the trace:
+
+```
+I ≈ η_F C_F c* m_p   →  c*          F ≈ η_F C_F p_c A_t   →  chamber pressure
+t_b ≈ w / (a p_c^n)  →  a           curve shape            →  n and throat erosion k
+```
+
+`fit_thrust_curve` solves for the parameters by bounded least squares on the quasi-steady part
+of the trace plus a total-impulse constraint. For the Cesaroni L1395, c* is identified to
+±0.1 % but n and k trade off: a regressive trace can come from a low exponent or from throat
+growth. `cases/ndrt2020.calibrate` therefore fits (a, c*, k) at each n across Davenas' range
+for non-aluminised composites (0.30–0.50) and the uncertainty study samples along that family.
+
+## 6. Flight — `flight.py`, `cases/ndrt2020.py`
+
+Thrust histories pass to a RocketPy `SolidMotor` with the real grain geometry (Ceotto et al.
+2021). RocketPy derives mass flow from a constant exhaust velocity; `exhaust_velocity_error`
+quantifies how far that sits from the ballistics mass flow. The atmosphere is the ERA5
+reanalysis for the launch, read the same way as RocketPy's reanalysis loader (nearest time,
+bilinear in latitude and longitude, geopotential to geometric height).
+
+## 7. Global sensitivity — `uq/sobol.py`
 
 Saltelli (2010) sampling on scrambled Sobol sequences, giving N(d + 2) runs. First-order indices
 use the Saltelli 2010 estimator, total-order indices the Jansen 1999 estimator, and confidence

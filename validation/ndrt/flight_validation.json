@@ -1,0 +1,33 @@
+{
+  "measured": {
+    "apogee_m": 1320.3569817485766,
+    "apogee_time_s": 17.095,
+    "apogee_error_pct": 0.0
+  },
+  "RocketPy, certified curve": {
+    "apogee_m": 1309.6907563583836,
+    "apogee_time_s": 16.799982992354593,
+    "apogee_error_pct": -0.807828908214462
+  },
+  "srmflight motor, n = 0.30": {
+    "apogee_m": 1313.9715974204398,
+    "apogee_time_s": 16.80949133909096,
+    "max_speed_mps": 175.88573191753474,
+    "constant_ve_mass_error": 0.005214607158319457,
+    "apogee_error_pct": -0.4836104490226918
+  },
+  "srmflight motor, n = 0.40": {
+    "apogee_m": 1317.2725171621225,
+    "apogee_time_s": 16.833576310830196,
+    "max_speed_mps": 176.02208516277813,
+    "constant_ve_mass_error": 0.004563526816483111,
+    "apogee_error_pct": -0.2336083823610499
+  },
+  "srmflight motor, n = 0.50": {
+    "apogee_m": 1323.2894857059248,
+    "apogee_time_s": 16.875075395867793,
+    "max_speed_mps": 176.3074883457241,
+    "constant_ve_mass_error": 0.004334354721625575,
+    "apogee_error_pct": 0.22209932600686827
+  }
+}

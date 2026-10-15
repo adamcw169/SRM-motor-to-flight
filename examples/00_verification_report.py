@@ -6,8 +6,9 @@ Run:  python examples/00_verification_report.py
 import numpy as np
 from scipy import stats
 
-from srmflight import Nozzle, Propellant
+from srmflight import Nozzle, Propellant, ThroatErosion
 from srmflight.ballistics import QuasiOneDMotor, ZeroDMotor
+from srmflight.calibration import EngCurve, fit_thrust_curve
 from srmflight.geometry import (AxialGrain, CircularPort, DistanceFieldSection, Grain,
                                 circle_polygon, square_polygon, star_polygon)
 from srmflight.uq import run_sobol
@@ -58,7 +59,30 @@ o = QuasiOneDMotor(AxialGrain.uniform(sec, 0.15, 10), prop, noz).run()
 rows.append(("Quasi-1D → 0D limit (L/D = 2.5), total impulse", "rel. difference",
              abs(o.total_impulse / z.total_impulse - 1), 1e-2))
 
-# 6. Sobol estimator on Ishigami
+# 6. calibration recovers a known motor from its own (synthetic) thrust certificate
+bates = Grain.bates(CircularPort(0.066, 0.030), 0.120, 5)
+
+
+def l_motor(p):
+    pr = Propellant(density=1520.0, a_ref=p["a_ref"], n=0.40, c_star=p["c_star"], gamma=1.2)
+    nz = Nozzle(0.0215, 0.0495, efficiency=0.95,
+                erosion=ThroatErosion(k=p["k"] * 1e-3, m=1.0, p_ref=6.9e6))
+    return ZeroDMotor(bates, pr, nz).run(n_out=600)
+
+
+truth = {"a_ref": 0.0081, "c_star": 1434.0, "k": 0.9}
+ref_run = l_motor(truth)
+tt = np.linspace(0.005, ref_run.t[-1], 400)
+cert = EngCurve("synthetic", 75, 621, ref_run.propellant_mass, 4.3, tt,
+                np.interp(tt, ref_run.t, ref_run.thrust))
+fit = fit_thrust_curve(l_motor, cert, {"a_ref": 0.007, "c_star": 1300.0, "k": 0.5},
+                       {"a_ref": (0.002, 0.03), "c_star": (900, 1800), "k": (0, 3)},
+                       window=(0.25, 3.0))
+err = max(abs(fit.params[k] / v - 1) for k, v in truth.items())
+rows.append(("Calibration recovers (a, c*, k) from a synthetic certificate", "max rel. error",
+             err, 2e-2))
+
+# 7. Sobol estimator on Ishigami
 u = stats.uniform(-np.pi, 2 * np.pi)
 f = lambda p: {"y": np.sin(p["x1"]) + 7 * np.sin(p["x2"]) ** 2  # noqa: E731
                + 0.1 * p["x3"] ** 4 * np.sin(p["x1"])}

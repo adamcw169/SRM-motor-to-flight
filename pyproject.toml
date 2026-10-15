@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-flight = ["rocketpy>=1.2"]
+flight = ["rocketpy>=1.13,<2"]  # tested with 1.13.0
 dev = ["pytest>=7", "ruff>=0.4"]
 
 [tool.setuptools.packages.find]
