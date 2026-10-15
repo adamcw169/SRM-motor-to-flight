@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "srmflight"
+version = "0.1.0"
+description = "Solid rocket motor burnback, internal ballistics and uncertainty quantification, coupled to 6-DOF flight."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Adam Williams" }]
+keywords = ["solid rocket motor", "internal ballistics", "grain burnback", "uncertainty quantification", "Sobol", "RocketPy"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.11",
+    "matplotlib>=3.7",
+    "contourpy>=1.1",
+]
+
+[project.optional-dependencies]
+flight = ["rocketpy>=1.2"]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
