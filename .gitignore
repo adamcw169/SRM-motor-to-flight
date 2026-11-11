@@ -14,3 +14,6 @@ references/*.pdf
 
 # NDRT data are fetched from the RocketPy repository, not redistributed
 validation/ndrt/data/
+
+# example scripts write their own plots here; README figures live in docs/assets/
+figures/

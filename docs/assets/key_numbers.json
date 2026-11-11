@@ -1,0 +1,18 @@
+{
+  "pressure_exponent_n": 0.4,
+  "peak_chamber_pressure_MPa": 2.953396757636239,
+  "peak_thrust_N": 1609.9315794786264,
+  "total_impulse_Ns": 4918.725673939141,
+  "action_time_s": 3.2345736948403223,
+  "effective_exhaust_velocity_mps": 1986.5308801711649,
+  "mass_closure": 1.0004193383044933,
+  "throat_diameter_growth_mm": 2.283461256264559,
+  "apogee_AGL_m": 1317.194959039653,
+  "measured_apogee_AGL_m": 1320.3569817485766,
+  "apogee_error_pct": -0.23948240912363364,
+  "apogee_time_s": 16.8329114826167,
+  "max_speed_mps": 176.00646187457383,
+  "max_mach": 0.5316916585987764,
+  "max_acceleration_mps2": 60.198477299181825,
+  "rail_exit_speed_mps": 8.267173191705346
+}
