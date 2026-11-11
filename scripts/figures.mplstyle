@@ -1,0 +1,40 @@
+# Shared figure style (light theme). The dark variant overrides colours only; see make_figures.py.
+font.family: DejaVu Sans
+font.size: 10
+axes.titlesize: 10.5
+axes.titleweight: bold
+axes.titlelocation: left
+axes.labelsize: 10
+axes.spines.top: False
+axes.spines.right: False
+axes.linewidth: 0.8
+axes.grid: True
+axes.axisbelow: True
+grid.linewidth: 0.6
+grid.alpha: 1.0
+lines.linewidth: 2.0
+lines.markersize: 6
+xtick.labelsize: 9
+ytick.labelsize: 9
+xtick.direction: out
+ytick.direction: out
+legend.frameon: False
+legend.fontsize: 9
+figure.dpi: 100
+savefig.dpi: 200
+savefig.bbox: tight
+savefig.pad_inches: 0.15
+svg.fonttype: path
+mathtext.default: regular
+
+# Light theme colours (GitHub light background)
+figure.facecolor: ffffff
+axes.facecolor: ffffff
+savefig.facecolor: ffffff
+text.color: 1f2328
+axes.labelcolor: 1f2328
+axes.edgecolor: 8c959f
+xtick.color: 57606a
+ytick.color: 57606a
+grid.color: e3e6ea
+hatch.color: 1f2328
